@@ -10,7 +10,7 @@ define(function () {
         var watchers  = {};
         var interests = {};
         var callbacks = [];
-        var scope     = [];
+        var scopes    = [];
         var objects   = {};
         var hungup    = false;
 
@@ -33,7 +33,9 @@ define(function () {
             }
 
             /* TODO Identify if we want to include object scope?! */
-            callback.apply(this, argumentList);
+            callbacks[callbackId].apply(
+                (scopes[callbackId] || this), argumentList
+            );
             
             return true;
         }
@@ -103,10 +105,10 @@ define(function () {
             var callbackId = callbacks.length;
 
             callbacks.push(callback);
-            scope.push(scope);
+            scopes.push(scope);
 
             for (var i = 0; i < keys.length; i++) {
-                watcherList(keys[i]).push(callbackId);
+                list(watchers, keys[i]).push(callbackId);
             }
 
             interests[callbackId] = keys.slice();

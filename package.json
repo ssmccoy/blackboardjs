@@ -1,0 +1,24 @@
+{
+  "name": "blackboardjs",
+  "version": "0.0.1",
+  "description": "JavaScript Blackboard",
+  "main": "src/blackboard.js",
+  "repository": {
+    "type": "git",
+    "url": "git.saymedia.com:/git/blackboardjs.git"
+  },
+  "keywords": [
+    "blackboard"
+  ],
+  "author": "smccoy",
+  "license": "Artistic License",
+  "devDependencies": {
+    "jshint-junit-reporter": "",
+    "grunt": "",
+    "grunt-contrib-jshint": "",
+    "grunt-contrib-uglify": "",
+    "grunt-contrib-jasmine": "~0.5.2",
+    "grunt-template-jasmine-requirejs": "",
+    "grunt-karma": ""
+  }
+}
