@@ -45,7 +45,7 @@ define(function () {
         }
 
         this.hangup = function () {
-            hungup   = false;
+            hungup   = true;
             watchers = {};
         };
 
@@ -90,9 +90,7 @@ define(function () {
          * <code>false</code> if they were not or the blackboard was hung up.
          */
         this.watch = function (keys, callback, scope) {
-            if (hungup) {
-                return false;
-            }
+            if (hungup) return false;
 
             if (!isArray(keys)) {
                 keys = [ keys ];
