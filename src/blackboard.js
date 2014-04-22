@@ -23,13 +23,18 @@ define(function () {
             var argumentList = [];
 
             for (var i = 0; i < callbackInterests.length; i++) {
-                var key = callbackInterests[i];
+                var argument = callbackInterests[i];
 
-                if (!objects.hasOwnProperty(key)) {
-                    return false;
+                if (typeof argument === "string") {
+                    if (!objects.hasOwnProperty(argument)) {
+                        return false;
+                    }
+
+                    argumentList.push(objects[argument]);
                 }
-
-                argumentList.push(objects[key]);
+                else if (typeof argument === "function") {
+                    argumentList.push(argument);
+                }
             }
 
             /* TODO Identify if we want to include object scope?! */
@@ -111,7 +116,9 @@ define(function () {
             scopes.push(scope);
 
             for (var i = 0; i < keys.length; i++) {
-                list(watchers, keys[i]).push(callbackId);
+                if (typeof keys[i] === "string") {
+                    list(watchers, keys[i]).push(callbackId);
+                }
             }
 
             interests[callbackId] = keys.slice();
@@ -164,7 +171,7 @@ define(function () {
                 for (var i = 0; i < watchersList.length; i++) {
                     dispatch(watchersList[i]);
 
-                    if (hangup) break;
+                    if (hungup) break;
                 }
             }
         };

@@ -10,7 +10,7 @@ require( [ "blackboard" ],
                 expect(blackboard).toBeTruthy();
             });
 
-            it( "Simple Watcher", function () {
+            it( "Simple Watcher with publisher", function () {
                 var blackboard = new Blackboard();
 
                 var runs = {}
@@ -24,9 +24,10 @@ require( [ "blackboard" ],
                     runs[ FOO + BAR ] = true;
                 });
 
-                blackboard.watch( [ "foo", blackboard.publisher( "bar" ) ],
+                /* When foo is available, publish bar using a publisher */
+                blackboard.watch( [ FOO, blackboard.publisher( BAR ) ],
                     function (foo, callback) {
-                        callback("provide bar");
+                        callback("bar");
                     }
                 );
 
@@ -41,7 +42,6 @@ require( [ "blackboard" ],
                 });
 
                 blackboard.put( FOO, "foo" );
-                blackboard.put( BAR, "bar" );
 
                 expect(runs[ FOO + BAR ]).toBeTruthy();
                 expect(runs[ FOO ]).toBeTruthy();
