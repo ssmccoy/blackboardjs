@@ -24,6 +24,12 @@ require( [ "blackboard" ],
                     runs[ FOO + BAR ] = true;
                 });
 
+                blackboard.watch( [ "foo", blackboard.publisher( "bar" ) ],
+                    function (foo, callback) {
+                        callback("provide bar");
+                    }
+                );
+
                 blackboard.watch( FOO, function (foo) {
                     expect(foo).toBe(FOO);
                     runs[ FOO ] = true;

@@ -44,6 +44,11 @@ define(function () {
             return Object.prototype.toString.call(value) === "[object Array]";
         }
 
+        /**
+         * Hang up this blackboard.
+         *
+         * <p>Undeclare all watchers and prevent all future dispatching.</p>
+         */
         this.hangup = function () {
             hungup   = true;
             watchers = {};
@@ -115,6 +120,34 @@ define(function () {
         };
 
         /**
+         * Create a publisher placeholder.
+         *
+         * <p>Create and return a publisher which can be added to a list of
+         * watchers, and will be provided to the waiting callback as a
+         * responder.</p>
+         *
+         * <p>Each argument provided to this method represents a key for which
+         * to push the data provided to the callback under.  Each argument
+         * provided to the callback is associated with the key provided to this
+         * function in order.  Hopefully if this is stated enough ways it will
+         * make sense to the reader.</p>
+         */
+        this.publisher = function () {
+            var blackboard = this;
+            var keys = [];
+
+            for (var i = 0; i < arguments.length; i++) {
+                keys.push(arguments[i]);
+            }
+
+            return function () {
+                for (var i = 0; i < arguments.length; i++) {
+                    blackboard.put( keys[i], arguments[i] );
+                }
+            };
+        };
+
+        /**
          * Place a value on the blackboard, notifying all interested watchers.
          *
          * <p>Given a key and a value, announce the availability of the key by
@@ -130,6 +163,8 @@ define(function () {
 
                 for (var i = 0; i < watchersList.length; i++) {
                     dispatch(watchersList[i]);
+
+                    if (hangup) break;
                 }
             }
         };
