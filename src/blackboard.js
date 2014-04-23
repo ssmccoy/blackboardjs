@@ -175,5 +175,50 @@ define(function () {
                 }
             }
         };
+
+        /**
+         * Specify that a watcher will return a promise.
+         *
+         * <p>Given the name of a key, associate the promise returned by a
+         * watcher with that key by publishing the value the promise provides
+         * to the blackboard under that key.  This works by returning a thin
+         * object which has a {@link #watch} method which overrides the
+         * watcher with the publisher.</p>
+         *
+         * @param provides The name of the key which the promise will provide.
+         */
+        this.promises = function (provides) {
+            var blackboard = this;
+
+            return {
+                "watch": function (keys, callable) {
+                    blackboard.watch(keys, function () {
+                        var promise = callable.apply(this, arguments);
+
+                        promise.then(blackboard.publisher(provides));
+                    })
+                }
+            };
+        };
+
+        /**
+         * Generate a promise for a given set of keys.
+         *
+         * <p>Given a list of keys, generate a promise which is resolved when
+         * values are associated with the given set of keys.</p>
+         *
+         * @param keys A list of keys.
+         */
+        this.promise = function (keys) {
+            var blackboard = this;
+
+            return {
+                "then": function (callback) {
+                    blackboard.watch(keys, function () {
+                        callback([].slice.call(arguments));
+                    });
+                }
+            };
+        };
     }
 });

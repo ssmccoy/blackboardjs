@@ -26,8 +26,8 @@ require( [ "blackboard" ],
 
                 /* When foo is available, publish bar using a publisher */
                 blackboard.watch( [ FOO, blackboard.publisher( BAR ) ],
-                    function (foo, callback) {
-                        callback("bar");
+                    function (foo, resolve) {
+                        resolve("bar");
                     }
                 );
 
@@ -46,6 +46,21 @@ require( [ "blackboard" ],
                 expect(runs[ FOO + BAR ]).toBeTruthy();
                 expect(runs[ FOO ]).toBeTruthy();
                 expect(runs[ BAR ]).toBeTruthy();
+            });
+
+            it( "Work with promises", function () {
+                var blackboard = new Blackboard();
+
+                blackboard.put( FOO, "foo" );
+
+                blackboard.promises( BAR ).watch( [ FOO ], function (foo) {
+                    /* Just promise-compatible, not an actual promise... */
+                    return { "then": function (cb) { cb("bar") } };
+                });
+
+                blackboard.promise( [ "bar" ] ).then(function (results) {
+                    expect(results[0]).toBe(BAR);
+                });
             });
 
             it( "Watch Published Values", function () {
