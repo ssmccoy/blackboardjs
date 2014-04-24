@@ -1,16 +1,20 @@
 {
   "name": "blackboardjs",
   "version": "0.0.1",
-  "description": "JavaScript Blackboard",
+  "description": "JavaScript Blackboard Workflow Controller",
   "main": "src/blackboard.js",
+  "homepage": "https://github.com/ssmccoy/blackboardjs",
   "repository": {
     "type": "git",
-    "url": "git.saymedia.com:/git/blackboardjs.git"
+    "url": "git@github.com:ssmccoy/blackboardjs.git"
   },
   "keywords": [
     "blackboard"
   ],
-  "author": "smccoy",
+  "author": {
+    "name": "Scott S. McCoy",
+    "email": "tag@cpan.org"
+  },
   "license": "Artistic License",
   "devDependencies": {
     "jshint-junit-reporter": "",
